@@ -3,6 +3,8 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import Toolbar from '@/components/toolbar'
+import { ArrowBigLeftDash } from "lucide-react"
 
 const motivationalQuotes = [
   "Believe you can and you're halfway there.",
@@ -27,7 +29,9 @@ export default function ActionPage() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 p-4">
-        <Link href="/" style={{position: "absolute", top: "15px", "left": "15px"}}>Назад</Link>
+        <Link href="/" style={{position: "absolute", top: "15px", "left": "15px"}}>
+        <ArrowBigLeftDash size={34} />
+        </Link>
       <form onSubmit={handleSubmit} className="w-full max-w-md space-y-4">
         <Input
           type="text"
@@ -46,6 +50,7 @@ export default function ActionPage() {
           <p className="text-lg text-purple-300 italic">&quot;{quote}&quot;</p>
         </div>
       )}
+      <Toolbar />
     </div>
   )
 }

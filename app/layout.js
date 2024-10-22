@@ -20,6 +20,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <script src="https://telegram.org/js/telegram-web-app.js"></script>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
