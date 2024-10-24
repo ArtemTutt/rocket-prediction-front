@@ -27,7 +27,7 @@ export default function InfoPage() {
     <>
       <div className="flex flex-col items-center pt-10 justify-top min-h-screen bg-gray-900">
         <Link
-          href="/action"
+          href="/second"
           style={{ position: "absolute", top: "15px", left: "15px" }}
         >
           <ArrowBigLeftDash size={34} />

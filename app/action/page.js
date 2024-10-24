@@ -29,7 +29,7 @@ export default function ActionPage() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 p-4">
-        <Link href="/" style={{position: "absolute", top: "15px", "left": "15px"}}>
+        <Link href="/selection" style={{position: "absolute", top: "15px", "left": "15px"}}>
         <ArrowBigLeftDash size={34} />
         </Link>
       <form onSubmit={handleSubmit} className="w-full max-w-md space-y-4">
@@ -50,7 +50,6 @@ export default function ActionPage() {
           <p className="text-lg text-purple-300 italic">&quot;{quote}&quot;</p>
         </div>
       )}
-      <Toolbar />
     </div>
   )
 }

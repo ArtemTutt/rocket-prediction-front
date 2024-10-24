@@ -29,7 +29,7 @@ export default function HomePage() {
           </span>
         </h1>
         <Link
-          href="/action"
+          href="/second"
           className="px-6 py-3 text-lg font-semibold text-white bg-purple-600 rounded-full hover:bg-purple-700 transition-colors duration-300"
         >
           Just do It
