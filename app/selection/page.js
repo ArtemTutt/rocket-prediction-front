@@ -2,6 +2,7 @@
 import Link from "next/link";
 import Script from "next/script";
 import { useState, useEffect } from "react";
+import Toolbar from '@/components/toolbar'
 import { ArrowBigLeftDash } from "lucide-react";
 import Image from "next/image";
 export default function HomePage() {
@@ -27,7 +28,7 @@ export default function HomePage() {
 
   return (
     <>
-      <div className="flex flex-col items-center pt-10 min-h-screen bg-gray-900">
+      <div className="flex flex-col items-center justify-center pt-10 min-h-screen bg-gray-900">
         <Link
           href="/second"
           style={{ position: "absolute", top: "15px", left: "15px" }}
@@ -72,6 +73,7 @@ export default function HomePage() {
             <span className="mr-4 text-xl">Solana Taro</span>
           </div>
         </Link>
+        <Toolbar />
       </div>
     </>
   );

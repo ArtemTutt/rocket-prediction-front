@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import Toolbar from '@/components/toolbar'
 import { ArrowBigLeftDash } from "lucide-react"
 export default function InfoPage() {
   const [username, setUsername] = useState("");
@@ -35,6 +36,7 @@ export default function InfoPage() {
         <h4 className="text-2xl font-bold text-center">
           Information About {username}
         </h4>
+        <Toolbar />
       </div>
     </>
   );

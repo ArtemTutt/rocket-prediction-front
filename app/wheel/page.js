@@ -79,7 +79,7 @@ export default function CryptoSlotMachine() {
       </Link>
       <div className="w-[350px] flex flex-col items-center">
         {showModal && (
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#516285] bg-opacity-90 p-8 rounded w-11/12 h-[560px] flex flex-col items-center justify-center">
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#516285] bg-opacity-90 p-8 rounded w-11/12 h-[530px] flex flex-col items-center justify-center">
             тут показывается модальное окно
           </div>
         )}
