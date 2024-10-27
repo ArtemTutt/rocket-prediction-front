@@ -28,7 +28,7 @@ export default function HomePage() {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center pt-10 min-h-screen bg-gray-900">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900">
         <Link
           href="/second"
           style={{ position: "absolute", top: "15px", left: "15px" }}
