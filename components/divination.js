@@ -96,7 +96,7 @@ export default function TarotDivination({setAllResult}) {
 
           {result && (
             <>
-              <div className="text-center space-y-4 mb-4">
+              <div className="text-center space-y-4 mb-4 p-4">
                 <p className="text-xl">{result.prediction}</p>
                 <p className="text-lg">
                   Luck Coefficient: {result.luckCoefficient}
