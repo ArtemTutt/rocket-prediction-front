@@ -38,7 +38,7 @@ const predictions = [
     bias: 2,
   },
   {
-    text: "Brace yourself for potential setbacks and disappointments.",
+    text: "Brace yourself for potential setbacks and disappointments (",
     bias: 1,
   },
 ];
