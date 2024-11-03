@@ -7,84 +7,115 @@ import { CSSTransition } from "react-transition-group";
 import { ArrowBigLeftDash } from "lucide-react";
 import WordReveal from "@/utils/showText";
 import "./styles.css";
+import { sendMessage } from "@/utils/reqChat";
 
 const results = [
   {
     text: "Rug Pull: The chart suddenly drops 90%, leaving investors puzzled.",
     bias: -90,
+    explanation:
+      "The coin he invested in dropped by 90%, leaving investors puzzled.",
   },
   {
     text: "Moon Shot: The chart skyrockets 1000%, showing massive growth.",
     bias: 1000,
+    explanation:
+      "The coin he invested in skyrocketed by 1000%, showing massive growth.",
   },
   {
     text: "Sideways Drift: The chart remains almost unchanged, creating an illusion of stability.",
     bias: 0,
+    explanation:
+      "The coin he invested in remained almost unchanged, creating an illusion of stability.",
   },
   {
     text: "Bear Attack: The chart drops 50%, scaring investors.",
     bias: -50,
+    explanation: "The coin he invested in dropped by 50%, scaring investors.",
   },
   {
     text: "Bull Run: The chart rises 100%, creating widespread excitement.",
     bias: 100,
+    explanation:
+      "The coin he invested in rose by 100%, creating widespread excitement.",
   },
   {
     text: "Exchange Hack: The chart falls 70% due to rumors of a hack.",
     bias: -70,
+    explanation: "The coin he invested in fell by 70% due to rumors of a hack.",
   },
   {
     text: "Whale Buy: The chart jumps 200% thanks to a large purchase.",
     bias: 200,
+    explanation:
+      "The coin he invested in rose by 200% thanks to a large purchase.",
   },
   {
     text: "Whale Sell: The chart drops 80% due to a large sale.",
     bias: -80,
+    explanation: "The coin he invested in dropped by 80% due to a large sale.",
   },
   {
     text: "Flash Crash: The chart plummets 60% in minutes due to automated trading errors, causing panic selling.",
     bias: -60,
+    explanation:
+      "The coin he invested in plummeted by 60% in minutes due to automated trading errors, causing panic selling.",
   },
   {
     text: "Pump and Dump: The chart surges 400% from coordinated buying, only to crash quickly as major holders sell off.",
     bias: 400,
+    explanation:
+      "The coin he invested in surged by 400% from coordinated buying, only to crash quickly as major holders sold off.",
   },
   {
     text: "Dead Cat Bounce: The chart briefly recovers 30% after a steep fall, misleading investors with false hopes.",
     bias: 30,
+    explanation:
+      "The coin he invested in briefly recovered by 30% after a steep fall, misleading investors with false hopes.",
   },
   {
     text: "Volcano Eruption: The chart suddenly erupts 500%, fueled by groundbreaking news, capturing market attention.",
     bias: 500,
+    explanation:
+      "The coin he invested in suddenly erupted by 500% due to groundbreaking news, capturing market attention.",
   },
   {
     text: "Winter Slump: The chart steadily declines 25% over months, reflecting a prolonged bearish sentiment.",
     bias: -25,
+    explanation:
+      "The coin he invested in steadily declined by 25% over months, reflecting a prolonged bearish sentiment.",
   },
   {
     text: "Golden Cross: The chart rises 20% as short-term moving averages cross above long-term averages, signaling potential uptrend.",
     bias: 20,
+    explanation:
+      "The coin he invested in rose by 20% as short-term moving averages crossed above long-term averages, signaling a potential uptrend.",
   },
   {
     text: "Death Cross: The chart falls 30% as short-term moving averages drop below long-term averages, indicating further decline.",
     bias: -30,
+    explanation:
+      "The coin he invested in fell by 30% as short-term moving averages dropped below long-term averages, indicating further decline.",
   },
   {
     text: "Sudden Freeze: Trading volume drops to a trickle, leaving the chart flat and traders uncertain about future directions.",
     bias: 0,
+    explanation:
+      "Trading volume for the coin he invested in dropped to a trickle, leaving the chart flat and traders uncertain about future directions.",
   },
   {
     text: "Breakout Rally: The chart breaks through long-established resistance levels, climbing 150% in a bullish reversal.",
     bias: 150,
+    explanation:
+      "The coin he invested in broke through long-established resistance levels, climbing by 150% in a bullish reversal.",
   },
   {
     text: "Capitulation Dive: The chart loses 40% as investors finally give up, selling off holdings in a mass exodus.",
     bias: -40,
+    explanation:
+      "The coin he invested in lost 40% as investors finally gave up, selling off holdings in a mass exodus.",
   },
 ];
-
-const sentence =
-  "The young trader Elias was inhaling the flavours of the harbour, preparing for his first steps into the market with a lucky coin. Despite the gloomy skies, he believed in bright prospects. Luck had given him a chance to bargain with the cheaper goods. With confidence, Elias began his journey of great achievement.";
 
 export default function CryptoSlotMachine() {
   const [result, setResult] = useState("");
@@ -93,17 +124,23 @@ export default function CryptoSlotMachine() {
   const [showResult, setShowResult] = useState(false);
   const [day, setDay] = useState(0);
   const [money, setMoney] = useState(1000);
+  const [textChat, setTextChat] = useState(
+    "The young trader Elias was inhaling the flavours of the harbour, preparing for his first steps into the market with a lucky coin. Despite the gloomy skies, he believed in bright prospects. Luck had given him a chance to bargain with the cheaper goods. With confidence, Elias began his journey of great achievement."
+  );
   const drumRef = useRef(null);
   const modalRef = useRef(null);
 
+
   const statusMessage = isSpinning ? "Spinning..." : showResult ? "" : "Ready!";
 
-  const spinDrum = () => {
+
+  const spinDrum = async () => {
     if (isSpinning) return;
+    setShowResult(false)
 
     setIsSpinning(true);
     setResult("");
-    setDay(prev => prev + 1);
+    setDay((prev) => prev + 1);
     // Animate the drum
     if (drumRef.current) {
       drumRef.current.style.transition =
@@ -112,27 +149,45 @@ export default function CryptoSlotMachine() {
     }
 
     // Set the result after a delay
-    setTimeout(() => {
+    setTimeout(async () => {
       const randomResult = results[Math.floor(Math.random() * results.length)];
 
       setResult({
         output: randomResult.text,
         affectChange: randomResult.bias,
+        forChat: randomResult.explanation,
       });
+      
+      await new Promise((resolve) => {
+        const checkForChat = setInterval(() => {
+          if (randomResult.explanation !== undefined) {
+            clearInterval(checkForChat);
+            resolve();
+          }
+        }, 100); // Проверяем каждые 100 мс
+      });
+      
 
-      setIsSpinning(false);
+      
+
+      const response = await sendMessage(textChat + randomResult.explanation);
+      setTextChat(response);
+  
       setShowResult(true);
+       
 
       // Reset the drum rotation
       if (drumRef.current) {
         drumRef.current.style.transition = "none";
         drumRef.current.style.transform = "rotateX(0deg)";
       }
+      setIsSpinning(false);
     }, 3000);
+
 
     setTimeout(() => {
       openModal();
-    }, 4000);
+    }, 9500);
   };
 
   useEffect(() => {
@@ -158,6 +213,14 @@ export default function CryptoSlotMachine() {
       closeModal();
     }
   };
+
+  // Price change
+  useEffect(() => {
+    if (result?.affectChange !== undefined) { // Проверяем, что affectChange определен
+      const cMoney = ((money * result.affectChange) / 100);
+      setMoney(Number(money + (cMoney)));
+    }
+  }, [textChat]);
 
   useEffect(() => {
     // Добавляем обработчик события клика
@@ -190,17 +253,22 @@ export default function CryptoSlotMachine() {
             </div>
             <p className="mt-2 text-gray-300 leading-relaxed">
               {/* The young trader Elias was inhaling the flavours of the harbour, preparing for his first
-              steps into the market with a lucky coin. Despite the gloomy skies, he
-              he believed in bright prospects. Luck had given him a chance to bargain
-              with the cheaper goods. With confidence, Elias began his
-              journey of great achievement. */}
-              <WordReveal text={sentence} />
+      steps into the market with a lucky coin. Despite the gloomy skies, he
+      he believed in bright prospects. Luck had given him a chance to bargain
+      with the cheaper goods. With confidence, Elias began his
+      journey of great achievement. */}
+              <WordReveal text={textChat} />
             </p>
           </div>
         </div>
       </div>
       <div className="w-[350px] flex flex-col items-center fixed bottom-10">
-        <CSSTransition in={showModal} classNames="alert" timeout={400} unmountOnExit>
+        <CSSTransition
+          in={showModal}
+          classNames="alert"
+          timeout={400}
+          unmountOnExit
+        >
           <div>
             {showModal && (
               <div
@@ -240,7 +308,9 @@ export default function CryptoSlotMachine() {
         >
           {isSpinning ? "Spinning..." : "Spin the Crypto Wheel!"}
         </Button>
-        <Button className="px-0" onClick={() => openModal()}>Check Chart</Button>
+        <Button className="px-0" onClick={() => openModal()}>
+          Check Chart
+        </Button>
       </div>
     </div>
   );

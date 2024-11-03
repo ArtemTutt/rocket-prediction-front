@@ -1,31 +1,66 @@
+// import React, { useEffect, useState } from "react";
+
+// const WordReveal = ({text}) => {
+//   const words = text.split(" ");
+//   const [visibleWords, setVisibleWords] = useState([]);
+
+//   useEffect(() => {
+//     setVisibleWords([])
+
+//     let index = 0;
+
+//     const intervalId = setInterval(() => {
+//       if (index < words.length) {
+//         setVisibleWords((prev) => [...prev, words[index]]);
+//         index++;
+//       } else {
+//         clearInterval(intervalId);
+//       }
+//     }, 70);
+
+//     return () => clearInterval(intervalId); // Очистка интервала при размонтировании компонента
+//   }, [text]);
+
+//   return (
+//     <p className="mt-2 text-gray-300 leading-relaxed">
+//       {visibleWords.join(" ")}
+//     </p>
+//   );
+// };
+
+// export default WordReveal;
 import React, { useEffect, useState } from "react";
 
-const WordReveal = ({text}) => {
-  const sentence =
-    "The young trader Elias was inhaling the flavours of the harbour, preparing for his first steps into the market with a lucky coin. Despite the gloomy skies, he believed in bright prospects. Luck had given him a chance to bargain with the cheaper goods. With confidence, Elias began his journey of great achievement.";
+const WordDisplay = ({ text }) => {
   const words = text.split(" ");
   const [visibleWords, setVisibleWords] = useState([]);
 
   useEffect(() => {
-    let index = 0;
+    // Сбрасываем видимые слова при изменении текста
+    setVisibleWords([]);
 
-    const intervalId = setInterval(() => {
+    let index = 0; // Индекс текущего слова
+
+    const displayWords = () => {
       if (index < words.length) {
-        setVisibleWords((prev) => [...prev, words[index]]);
+        setVisibleWords(words.slice(0, index + 1)); // Устанавливаем все слова до текущего индекса
         index++;
-      } else {
-        clearInterval(intervalId);
+        setTimeout(displayWords, 70); // Рекурсивный вызов для следующего слова
       }
-    }, 70); 
+    };
 
-    return () => clearInterval(intervalId); // Очистка интервала при размонтировании компонента
-  }, []);
+    displayWords(); // Начинаем с первого слова
+
+    // Очистка при размонтировании компонента
+    return () => setVisibleWords([]);
+  }, [text]);
 
   return (
-    <p className="mt-2 text-gray-300 leading-relaxed">
-      {visibleWords.join(" ")}
-    </p>
+    <div>
+      {visibleWords.join(" ")} {/* Отображаем видимые слова */}
+    </div>
   );
 };
 
-export default WordReveal;
+export default WordDisplay;
+
