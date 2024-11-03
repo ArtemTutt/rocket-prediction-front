@@ -3,7 +3,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { CSSTransition } from "react-transition-group";
 import { ArrowBigLeftDash } from "lucide-react";
+import WordReveal from "@/utils/showText";
+import "./styles.css";
 
 const results = [
   {
@@ -80,26 +83,27 @@ const results = [
   },
 ];
 
-console.log(results.length);
+const sentence =
+  "The young trader Elias was inhaling the flavours of the harbour, preparing for his first steps into the market with a lucky coin. Despite the gloomy skies, he believed in bright prospects. Luck had given him a chance to bargain with the cheaper goods. With confidence, Elias began his journey of great achievement.";
 
 export default function CryptoSlotMachine() {
   const [result, setResult] = useState("");
   const [isSpinning, setIsSpinning] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showResult, setShowResult] = useState(false);
-  const [day, setDay] = useState(1);
+  const [day, setDay] = useState(0);
   const [money, setMoney] = useState(1000);
   const drumRef = useRef(null);
   const modalRef = useRef(null);
 
   const statusMessage = isSpinning ? "Spinning..." : showResult ? "" : "Ready!";
-  console.log(result)
+
   const spinDrum = () => {
     if (isSpinning) return;
 
     setIsSpinning(true);
     setResult("");
-
+    setDay(prev => prev + 1);
     // Animate the drum
     if (drumRef.current) {
       drumRef.current.style.transition =
@@ -115,6 +119,7 @@ export default function CryptoSlotMachine() {
         output: randomResult.text,
         affectChange: randomResult.bias,
       });
+
       setIsSpinning(false);
       setShowResult(true);
 
@@ -151,7 +156,6 @@ export default function CryptoSlotMachine() {
     // Проверяем, был ли клик вне модального окна
     if (modalRef.current && !modalRef.current.contains(event.target)) {
       closeModal();
-      setDay((prev) => prev + 1);
     }
   };
 
@@ -173,7 +177,7 @@ export default function CryptoSlotMachine() {
       >
         <ArrowBigLeftDash size={34} />
       </Link>
-      <div className="max-w-md mx-auto bg-gray-800 rounded-xl shadow-lg overflow-hidden md:max-w-2xl">
+      <div className="max-w-md mx-auto bg-gray-800 rounded-xl shadow-lg h-[300px] overflow-hidden md:max-w-2xl fixed top-20 w-[360px]">
         <div className="md:flex">
           <div className="p-4">
             <div className="flex items-center justify-between mb-4">
@@ -185,37 +189,35 @@ export default function CryptoSlotMachine() {
               </h3>
             </div>
             <p className="mt-2 text-gray-300 leading-relaxed">
-              Молодой трейдер Элиас вдыхал ароматы порта, готовясь к первым
-              шагам на рынке с монетой на удачу. Несмотря на хмурое небо, он
-              верил в яркие перспективы. Удача дала ему шанс на выгодные сделки
-              с подешевевшими товарами. С уверенностью Элиас начал своё
-              путешествие к великим достижениям.
+              {/* The young trader Elias was inhaling the flavours of the harbour, preparing for his first
+              steps into the market with a lucky coin. Despite the gloomy skies, he
+              he believed in bright prospects. Luck had given him a chance to bargain
+              with the cheaper goods. With confidence, Elias began his
+              journey of great achievement. */}
+              <WordReveal text={sentence} />
             </p>
           </div>
         </div>
       </div>
-      <div className="w-[350px] flex flex-col items-center ">
-        {showModal && (
-          <div
-            ref={modalRef}
-            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#516285] bg-opacity-90 p-8 rounded w-11/12 h-[530px] flex flex-col items-center justify-center"
-          >
-            тут показывается модальное окно
+      <div className="w-[350px] flex flex-col items-center fixed bottom-10">
+        <CSSTransition in={showModal} classNames="alert" timeout={400} unmountOnExit>
+          <div>
+            {showModal && (
+              <div
+                ref={modalRef}
+                className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black bg-opacity-90 p-8 rounded w-[350px] h-[560px] flex flex-col items-center justify-center"
+              >
+                тут показывается модальное окно
+              </div>
+            )}
           </div>
-        )}
-
-        {/* Result display above the drum */}
-        {/* <div className="w-full rounded-lg p-4 mb-4  text-center">
-      <p className="text-xl font-bold text-white-800 h-16 flex items-center justify-center">
-      {result || ""}
-      </p>
-      </div> */}
+        </CSSTransition>
 
         {/* Drum */}
         <div className="w-[340px] bg-red-400 rounded-3xl p-4 shadow-lg overflow-hidden mb-4 mt-10">
           <div className="bg-white rounded-lg p-4 shadow-inner">
             {showResult && (
-              <p className="text-lgl font-bold text-white-800 flex items-center justify-center absolute w-[290px] text-center text-black">
+              <p className="text-lgl font-bold text-white-800 flex items-center justify-center absolute w-[275px] text-center text-black">
                 {result.output || ""}
               </p>
             )}
@@ -238,6 +240,7 @@ export default function CryptoSlotMachine() {
         >
           {isSpinning ? "Spinning..." : "Spin the Crypto Wheel!"}
         </Button>
+        <Button className="px-0" onClick={() => openModal()}>Check Chart</Button>
       </div>
     </div>
   );
